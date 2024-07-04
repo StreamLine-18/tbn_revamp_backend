@@ -49,15 +49,15 @@
                                     </div>
                                 </form>
 
-{{--                                <hr>--}}
+                                <hr>
 
-{{--                                @if (Route::has('password.request'))--}}
-{{--                                    <div class="text-center">--}}
-{{--                                        <a class="small text-link" href="{{ route('password.request') }}">--}}
-{{--                                            {{ __('Forgot Password?') }}--}}
-{{--                                        </a>--}}
-{{--                                    </div>--}}
-{{--                                @endif--}}
+                                @if (Route::has('password.request'))
+                                    <div class="text-center">
+                                        <a class="small text-link" href="{{ route('password.request') }}">
+                                            {{ __('Forgot Password?') }}
+                                        </a>
+                                    </div>
+                                @endif
 
                                 @if (Route::has('register'))
                                     <div class="text-center ">

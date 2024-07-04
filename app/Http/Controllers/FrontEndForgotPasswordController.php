@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
-class ForgotPasswordController extends Controller
+class FrontEndForgotPasswordController extends Controller
 {
     public function sendResetLinkEmail(Request $request): \Illuminate\Http\JsonResponse
     {
