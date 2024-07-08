@@ -45,6 +45,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Event routes
     Route::resource('events', 'EventController');
+
+
     Route::get('events/{slug}', 'EventController@show')
         ->where('slug', '[A-Za-z0-9\-]+')
         ->name('events.show');

@@ -35,10 +35,26 @@ class HomeController extends Controller
         // Fetch upcoming events
         $events = Event::where('tanggal', '>=', Carbon::now())->paginate(10);
 
-        // Calculate total revenue
+        // Calculate total revenue across all events
         $totalRevenue = EventRegistration::join('events', 'event_registrations.event_id', '=', 'events.id')
             ->sum('events.harga');
-        return view('home', compact('widget', 'events', 'totalRevenue'));
+
+        // Calculate total people registered across all events
+        $totalRegistrations = EventRegistration::count();
+
+
+        // Fetch all events and calculate total revenue for each
+        $allEvents = Event::with('registrations')->get()->map(function($event) {
+            $event->total_registrations = $event->registrations->count();
+            $event->total_revenue = $event->total_registrations * $event->harga;
+            return $event;
+        });
+
+        $totalEvent = $allEvents->count();
+
+
+
+        return view('home', compact('widget', 'events', 'totalRevenue', 'allEvents', 'totalEvent', 'totalRegistrations'));
     }
 
 

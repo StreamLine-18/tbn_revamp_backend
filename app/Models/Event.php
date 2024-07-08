@@ -24,4 +24,9 @@ class Event extends Model
             $event->slug = Str::slug($event->judul);
         });
     }
+
+    public function registrations()
+    {
+        return $this->hasMany(EventRegistration::class);
+    }
 }

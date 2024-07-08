@@ -24,29 +24,12 @@
 
         <!-- Total Revenue -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Revenue</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -56,21 +39,34 @@
             </div>
         </div>
 
-        <!-- Earnings (Monthly) Card Example -->
+
+        <!-- Total Event -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Event</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"> {{$totalEvent}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registered user count -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Registered user count</div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$totalRegistrations}}</div>
                                 </div>
                             </div>
                         </div>
@@ -106,23 +102,29 @@
         <div class="col-lg-6 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Event Revenue</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Registered User Count by Event</h6>
                 </div>
                 <div class="card-body overflow-auto">
-                    @foreach ($events as $event)
+                    @foreach ($allEvents as $event)
                         <div class="mb-4">
-                            <h4 class="small font-weight-bold">{{ $event->judul }} <span class="float-right">Rp. {{ number_format($event->total_revenue, 2) }}</span></h4>
+                            <h4 class="small font-weight-bold">{{ $event->judul }} <span class="float-right">{{ $event->total_registrations }}</span></h4>
                             @php
-                                $percentage = ($event->total_revenue / $totalRevenue) * 100;
+                                $percentage = ($event->total_registrations / $totalRegistrations) * 100;
+                                // Ensure percentage is not NaN or infinity
+                                $percentage = is_nan($percentage) || is_infinite($percentage) ? 0 : $percentage;
+                                $randomColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF)); // Generate random hex color
                             @endphp
                             <div class="progress mb-2">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%; background-color: {{ $randomColor }}" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
         </div>
+
+
+
 
 
 

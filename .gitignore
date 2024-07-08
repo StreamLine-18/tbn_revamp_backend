@@ -19,3 +19,5 @@ storage/logs/laravel.log
 /.idea
 storage/logs/laravel.log
 storage/logs/laravel.log
+/storage/logs
+/storage/logs
