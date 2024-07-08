@@ -37,5 +37,17 @@ class EventRegistration extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function getTicketPriceAttribute()
+    {
+        return self::$ticketPrices[$this->ticket_type] ?? 0;
+    }
+
+    public static function calculateTotalRevenue()
+    {
+        return self::all()->sum(function ($registration) {
+            return $registration->ticket_price;
+        });
+    }
+
 }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\EventRegistration;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -34,6 +35,12 @@ class HomeController extends Controller
         // Fetch upcoming events
         $events = Event::where('tanggal', '>=', Carbon::now())->paginate(10);
 
-        return view('home', compact('widget', 'events'));
+        // Calculate total revenue
+        $totalRevenue = EventRegistration::join('events', 'event_registrations.event_id', '=', 'events.id')
+            ->sum('events.harga');
+        return view('home', compact('widget', 'events', 'totalRevenue'));
     }
+
+
+
 }
