@@ -99,6 +99,32 @@
 
     <div class="row">
 
+        {{--    Total Revenue by Event --}}
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Total Revenue by Event</h6>
+                </div>
+                <div class="card-body overflow-auto">
+                    @foreach ($allEvents as $event)
+                        <div class="mb-4">
+                            <h4 class="small font-weight-bold">{{ $event->judul }} <span class="float-right">Rp. {{ number_format($event->total_revenue, 2) }}</span></h4>
+                            @php
+                                $percentage = ($event->total_revenue / $totalRevenue) * 100;
+                                // Ensure percentage is not NaN or infinity
+                                $percentage = is_nan($percentage) || is_infinite($percentage) ? 0 : $percentage;
+                                $randomColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF)); // Generate random hex color
+                            @endphp
+                            <div class="progress mb-2">
+                                <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%; background-color: {{ $randomColor }}" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        
+    {{--    Registered User Count by Event  --}}
         <div class="col-lg-6 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header py-3">
@@ -126,8 +152,6 @@
 
 
 
-
-
         <!-- Upcoming Events Card -->
         <div class="col-lg-6 mb-4">
             <div class="card shadow h-100">
@@ -141,9 +165,17 @@
                         <div class="list-group">
                             @foreach ($events as $event)
                                 <a href="{{ route('events.show', $event->slug) }}" class="list-group-item list-group-item-action">
-                                    <h5 class="mb-1">{{ $event->judul }}</h5>
-                                    <p class="mb-1 text-justify">{!! $event->deskripsi !!}</p>
-                                    <small>{{ $event->tanggal }}</small>
+                                    <div class="media">
+                                        @if ($event->poster_path)
+                                            <img src="{{ asset('storage/' . $event->poster_path) }}" alt="Event Poster" class="mr-3 rounded" style="width: 100px; height: 100px; object-fit: cover;">
+                                        @else
+                                            <div class="mr-3 bg-light" style="width: 100px; height: 100px;"></div>
+                                        @endif
+                                        <div class="media-body">
+                                            <h5 class="mt-0 mb-1">{{ $event->judul }}</h5>
+                                            <p>{{ $event->tanggal }}</p>
+                                        </div>
+                                    </div>
                                 </a>
                             @endforeach
                         </div>
@@ -152,6 +184,9 @@
                 </div>
             </div>
         </div>
+
+
+
 
     </div>
 @endsection
